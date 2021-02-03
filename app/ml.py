@@ -2,13 +2,25 @@
 
 import logging
 import random
+import os
+from os import getenv
 
+from dotenv import load_dotenv, find_dotenv
 from fastapi import APIRouter
 import pandas as pd
 from pydantic import BaseModel, Field, validator
+import spotipy
+from spotipy.oauth2 import SpotifyClientCredentials
 
 log = logging.getLogger(__name__)
 router = APIRouter()
+
+load_dotenv(find_dotenv())
+SPOTIFY_ID = getenv("SPOTIFY_CLIENT_ID")
+SPOTIFY_SECRET = getenv("SPOTIFY_CLIENT_SECRET")
+
+sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id=SPOTIFY_ID,
+                                                            client_secret=SPOTIFY_SECRET))
 
 
 class Item(BaseModel):
